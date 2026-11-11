@@ -1,295 +1,205 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { CheckIcon } from '@heroicons/vue/20/solid'
+import {
+  MapPinIcon,
+  PhoneIcon,
+  ClockIcon,
+  WrenchScrewdriverIcon,
+  ArrowRightIcon,
+  ShieldCheckIcon,
+  CheckCircleIcon
+} from '@heroicons/vue/24/outline'
+import TechBackground from '../components/TechBackground.vue'
 
 const router = useRouter()
 const usuario = ref(null)
 const tallerActivo = ref(null)
-const hoverActivo = ref(null)
 
 onMounted(() => {
   const userData = localStorage.getItem('user')
   if (userData) {
-    usuario.value = JSON.parse(userData)
+    try {
+      usuario.value = JSON.parse(userData)
+    } catch (e) {
+      usuario.value = null
+    }
   }
 })
 
-const seleccionarTaller = (taller) => {
-  tallerActivo.value = taller
-  // Pequeño delay antes de navegar para que se complete la animación
+const seleccionarTaller = (tallerId) => {
+  tallerActivo.value = tallerId
   setTimeout(() => {
-    irATaller(taller)
-  }, 400)
+    irATaller(tallerId)
+  }, 250)
 }
 
-const irATaller = (taller) => {
-  router.push(`/taller/${taller}`)
+const irATaller = (tallerId) => {
+  router.push(`/taller/${tallerId}`)
 }
 
-const cerrarSesion = () => {
-  localStorage.removeItem('authToken')
-  localStorage.removeItem('user')
-  router.push('/login')
-}
-
-// Datos de los talleres adaptados del template de pricing
 const talleres = [
   {
-    id: 'taller-talisman',
+    id: 'talisman',
+    codigo: 'SUCURSAL 01 // CDMX',
     nombre: 'Taller Talismán',
-    descripcion: 'Especialistas en servicio Renault',
-    href: '#',
-    caracteristicas: [
-      'Avenida Talismán 3603, Gertrudis Sánchez 1ra SECC., Gustavo A. Madero, 07460 CDMX',
-      '(55) 22433546',
-      'Lun-Vie: 8:00 - 18:00'
-    ],
-    destacado: false,
-    color: 'yellow'
+    subtitulo: 'Especialistas en Servicio y Diagnóstico Renault',
+    descripcion: 'Centro técnico principal equipado para mantenimientos mayores, diagnóstico computarizado y laboratorio de inyección.',
+    direccion: 'Avenida Talismán 3603, Gertrudis Sánchez 1ra Secc., Gustavo A. Madero, 07460 Ciudad de México',
+    telefono: '(55) 2243-3546',
+    horario: 'Lunes a Viernes: 8:00 - 18:00 hrs',
+    equipamiento: 'Escáner Original Renault Can-Clip • Rampa Hidráulica • Torno de Frenos',
+    serviciosClave: ['Afinación Mayor y Menor', 'Banda de Distribución', 'Frenos y Suspensión']
   },
   {
-    id: 'taller-lutecia',
+    id: 'lutecia',
+    codigo: 'SUCURSAL 02 // EDOMEX',
     nombre: 'Taller Lutecia',
-    descripcion: 'Expertos en mecánica Renault',
-    href: '#',
-    caracteristicas: [
-      'Av. Carlos Hank Gonzales Mz176 Lt.15 Fracc. Rio de luz C.P 55100',
-      '(55) 63490611',
-      'Lun-Vie: 7:30 - 17:30'
-    ],
-    destacado: true,
-    color: 'blue'
+    subtitulo: 'Expertos en Mecánica y Transmisiones Renault',
+    descripcion: 'Unidad de servicio especializada en reparaciones mecánicas integrales, tren motriz, cajas automáticas CVT y sistemas de enfriamiento.',
+    direccion: 'Av. Carlos Hank González Mz 176 Lt 15, Fracc. Río de Luz, C.P. 55100, Ecatepec de Morelos',
+    telefono: '(55) 6340-0611',
+    horario: 'Lunes a Viernes: 7:30 - 17:30 hrs',
+    equipamiento: 'Diagnóstico Electrónico • Ajuste de Motores • Servicio de Transmisiones CVT',
+    serviciosClave: ['Transmisión y Embrague', 'Alineación de Motor', 'Sistema Eléctrico y A/C']
   }
 ]
 </script>
 
 <template>
-  <div class="bg-black min-h-screen relative isolate overflow-hidden">
-    <!-- Efectos de fondo decorativos amarillos -->
-    <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
-      <div
-        class="relative left-[calc(50%-11rem)] aspect-1155/678 w-144.5 -translate-x-1/2 rotate-30 bg-gradient-to-tr from-yellow-400 to-yellow-600 opacity-20 sm:left-[calc(50%-30rem)] sm:w-288.75"
-        style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"
-      ></div>
-    </div>
+  <div class="min-h-screen text-zinc-100 relative isolate flex flex-col justify-between selection:bg-yellow-500 selection:text-black overflow-x-clip">
+    <!-- Fondo tecnologico de alta gama: Blueprint, particulas, mallas y paneles -->
+    <TechBackground />
 
-    <div class="absolute inset-x-0 top-1/3 -z-10 transform-gpu overflow-hidden blur-3xl" aria-hidden="true">
-      <div
-        class="relative left-[calc(50%+3rem)] aspect-1155/678 w-144.5 -translate-x-1/2 bg-gradient-to-tr from-yellow-500 to-yellow-700 opacity-15 sm:left-[calc(50%+36rem)] sm:w-288.75"
-        style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"
-      ></div>
-    </div>
+    <!-- Contenedor Central de Seleccion de Taller -->
+    <main class="flex-1 w-full max-w-[1850px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-14 py-8 sm:py-12 flex flex-col justify-center">
+      <!-- Cabecera de la Seccion -->
+      <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+        <!-- Badge -->
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 text-xs sm:text-sm font-semibold tracking-wide mb-5">
+          <span class="size-2 rounded-full bg-yellow-400 animate-pulse"></span>
+          <span>Red de Talleres Especializados Renault</span>
+        </div>
 
-    <!-- Efectos de partículas/brillo adicional -->
-    <div class="absolute inset-0 -z-10">
-      <div class="absolute inset-0 bg-[radial-gradient(45rem_50rem_at_top,theme(colors.yellow.400),transparent)] opacity-10"></div>
-      <div class="absolute inset-0 bg-[radial-gradient(100rem_50rem_at_bottom,theme(colors.yellow.600),transparent)] opacity-10"></div>
-    </div>
+        <!-- Titulo Principal -->
+        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
+          Selecciona tu <span class="bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500 bg-clip-text text-transparent">taller activo</span>
+        </h1>
 
-    <!-- Efectos de brillo flotante -->
-    <div class="absolute top-1/4 left-1/4 -z-10">
-      <div class="w-64 h-64 bg-yellow-400 rounded-full blur-3xl opacity-10 animate-pulse"></div>
-    </div>
-    <div class="absolute bottom-1/4 right-1/4 -z-10">
-      <div class="w-96 h-96 bg-yellow-600 rounded-full blur-3xl opacity-5 animate-pulse" style="animation-delay: 2s;"></div>
-    </div>
-
-    <!-- CONTENIDO PRINCIPAL - Adaptado del template de pricing -->
-    <div class="relative isolate px-6 py-24 sm:py-32 lg:px-8 min-h-screen flex items-center justify-center">
-      <!-- Efecto decorativo adicional del template pricing -->
-      <div class="absolute inset-x-0 -top-3 -z-10 transform-gpu overflow-hidden px-36 blur-3xl" aria-hidden="true">
-        <div class="mx-auto aspect-1155/678 w-288.75 bg-gradient-to-tr from-yellow-500 to-yellow-600 opacity-10" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+        <!-- Descripcion -->
+        <p class="mt-4 text-sm sm:text-base lg:text-lg text-zinc-300 max-w-2xl mx-auto leading-relaxed">
+          Elige la sucursal en la que operarás el día de hoy para gestionar notas de servicio, diagnósticos computarizados y emisión de presupuestos oficiales.
+        </p>
       </div>
 
-      <div class="mx-auto max-w-7xl">
-        <!-- Encabezado del template pricing -->
-        <div class="mx-auto max-w-4xl text-center">
-          <h2 class="text-base/7 font-semibold text-yellow-400">Nuestros Talleres</h2>
-          <p class="mt-2 text-5xl font-semibold tracking-tight text-balance text-white sm:text-6xl bg-gradient-to-br from-white to-gray-300 bg-clip-text text-transparent">
-            Selecciona tu taller
-          </p>
-        </div>
-        <p class="mx-auto mt-6 max-w-2xl text-center text-lg font-medium text-pretty text-gray-300 sm:text-xl/8">
-          Elige el taller Renault al que estes actualmente. Ambos ofrecen el servicio de la generación de notas para los clientes.
-        </p>
+      <!-- Grid de Talleres: 2 Columnas Sincronizadas y Proporcionales -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 max-w-6xl 2xl:max-w-7xl mx-auto w-full">
+        <div
+          v-for="taller in talleres"
+          :key="taller.id"
+          @click="seleccionarTaller(taller.id)"
+          :class="[
+            'rounded-3xl p-6 sm:p-8 bg-zinc-900/80 border transition-all duration-300 flex flex-col justify-between group relative overflow-hidden shadow-2xl backdrop-blur-xl cursor-pointer',
+            tallerActivo === taller.id
+              ? 'border-yellow-400 ring-2 ring-yellow-400/50 scale-[1.02] shadow-yellow-500/20'
+              : 'border-white/10 hover:border-yellow-500/50 hover:-translate-y-1 hover:shadow-yellow-500/10'
+          ]"
+        >
+          <!-- Borde superior luminoso activo al hover -->
+          <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-yellow-400/40 to-transparent group-hover:via-yellow-400 transition-all duration-500"></div>
 
-        <!-- Grid de talleres adaptado del template pricing -->
-        <div class="mx-auto mt-16 grid max-w-lg grid-cols-1 items-center gap-y-6 sm:mt-20 sm:gap-y-0 lg:max-w-4xl lg:grid-cols-2 lg:gap-8">
-          <div
-            v-for="(taller, tierIdx) in talleres"
-            :key="taller.id"
-            @click="seleccionarTaller(taller.id.replace('taller-', ''))"
-            @mouseenter="hoverActivo = taller.id.replace('taller-', '')"
-            @mouseleave="hoverActivo = null"
-            :class="[
-              taller.destacado ? 'relative bg-gray-800/50 backdrop-blur-sm' : 'bg-white/5 backdrop-blur-sm lg:mx-0',
-              taller.destacado ? '' : tierIdx === 0 ? 'rounded-t-3xl sm:rounded-b-none lg:rounded-tr-none lg:rounded-bl-3xl' : 'sm:rounded-t-none lg:rounded-tr-3xl lg:rounded-bl-none',
-              'rounded-3xl p-8 ring-1 ring-yellow-500/20 sm:p-10 cursor-pointer transition-all duration-500 ease-out min-h-[480px] flex flex-col justify-between',
-              // Animaciones basadas en el taller activo (click)
-              tallerActivo === taller.id.replace('taller-', '')
-                ? 'transform scale-105 z-20 shadow-2xl border-2 border-yellow-500/50'
-                : tallerActivo && tallerActivo !== taller.id.replace('taller-', '')
-                  ? 'transform scale-95 opacity-80 z-10'
-                  : 'z-0',
-              // Animaciones basadas en el hover
-              hoverActivo === taller.id.replace('taller-', '') && !tallerActivo
-                ? 'transform scale-105 z-20 shadow-xl border border-yellow-500/30'
-                : hoverActivo && hoverActivo !== taller.id.replace('taller-', '') && !tallerActivo
-                  ? 'transform scale-95 opacity-90 z-10'
-                  : ''
-            ]"
-          >
-            <!-- Contenido de la card adaptado del template pricing -->
-            <div>
-              <!-- Icono del taller -->
-              <div :class="`w-16 h-16 ${
-                taller.color === 'yellow' ? 'bg-yellow-500' : 'bg-blue-500'
-              } rounded-2xl flex items-center justify-center mx-auto mb-6 transition-all duration-500 ${
-                (tallerActivo === taller.id.replace('taller-', '') || hoverActivo === taller.id.replace('taller-', ''))
-                  ? 'scale-110 shadow-lg'
-                  : 'shadow-md'
-              }`">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 66 86" class="w-8 h-8 fill-white">
-                  <path
-                    d="m52.3 43-23 43H23L0 43 22.9 0h6.5L6.5 43l19.6 36.9L45.7 43 34.3 21.5l3.3-6.1L52.3 43zM42.5 0h-6.6L13.1 43l14.7 27.6 3.2-6.1L19.6 43 39.2 6l19.6 37-22.9 43h6.6l22.8-43L42.5 0z"
-                  />
+          <div>
+            <!-- Fila superior: Logo Renault + Estatus Operativo -->
+            <div class="flex items-center justify-between gap-4 mb-6">
+              <div class="size-13 sm:size-14 rounded-2xl bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center shadow-lg shadow-yellow-500/25 group-hover:scale-105 transition-transform duration-200 shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 66 86" class="size-7 fill-black">
+                  <path d="m52.3 43-23 43H23L0 43 22.9 0h6.5L6.5 43l19.6 36.9L45.7 43 34.3 21.5l3.3-6.1L52.3 43zM42.5 0h-6.6L13.1 43l14.7 27.6 3.2-6.1L19.6 43 39.2 6l19.6 37-22.9 43h6.6l22.8-43L42.5 0z" />
                 </svg>
               </div>
 
-              <h3 :id="taller.id" :class="[
-                taller.destacado ? 'text-yellow-400' : (taller.color === 'yellow' ? 'text-yellow-400' : 'text-blue-400'),
-                'text-base/7 font-semibold text-center transition-colors duration-300',
-                (tallerActivo === taller.id.replace('taller-', '') || hoverActivo === taller.id.replace('taller-', ''))
-                  ? 'text-white'
-                  : ''
-              ]">{{ taller.nombre }}</h3>
-
-              <p class="mt-4 flex items-baseline gap-x-2 justify-center">
-                <span :class="[
-                  taller.destacado ? 'text-white' : 'text-white',
-                  'text-2xl font-semibold tracking-tight transition-colors duration-300'
-                ]">{{ taller.descripcion }}</span>
-              </p>
-
-              <p :class="[
-                taller.destacado ? 'text-gray-300' : 'text-gray-300',
-                'mt-6 text-base/7 text-center transition-colors duration-300',
-                (tallerActivo === taller.id.replace('taller-', '') || hoverActivo === taller.id.replace('taller-', ''))
-                  ? 'text-gray-200'
-                  : ''
-              ]">Servicio especializado Renault</p>
-
-              <ul role="list" :class="[
-                taller.destacado ? 'text-gray-300' : 'text-gray-300',
-                'mt-8 space-y-3 text-sm/6 sm:mt-10 transition-colors duration-300',
-                (tallerActivo === taller.id.replace('taller-', '') || hoverActivo === taller.id.replace('taller-', ''))
-                  ? 'text-gray-200'
-                  : ''
-              ]">
-                <li v-for="caracteristica in taller.caracteristicas" :key="caracteristica" class="flex gap-x-3 group">
-                  <CheckIcon :class="[
-                    taller.destacado ? (taller.color === 'yellow' ? 'text-yellow-400' : 'text-blue-400') : (taller.color === 'yellow' ? 'text-yellow-500' : 'text-blue-500'),
-                    'h-6 w-5 flex-none transition-all duration-300 group-hover:scale-110',
-                    (tallerActivo === taller.id.replace('taller-', '') || hoverActivo === taller.id.replace('taller-', ''))
-                      ? (taller.color === 'yellow' ? 'text-yellow-400' : 'text-blue-400')
-                      : ''
-                  ]" aria-hidden="true" />
-                  <span class="group-hover:text-white transition-colors duration-200">{{ caracteristica }}</span>
-                </li>
-              </ul>
+              <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs font-semibold shrink-0">
+                <span class="size-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>Sucursal Operativa</span>
+              </div>
             </div>
 
+            <!-- Identificacion de Sucursal y Nombre -->
+            <div class="mb-4">
+              <span class="text-[11px] font-mono font-bold tracking-wider text-yellow-500 uppercase block mb-1">
+                {{ taller.codigo }}
+              </span>
+              <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight group-hover:text-yellow-400 transition-colors">
+                {{ taller.nombre }}
+              </h2>
+              <p class="text-sm font-semibold text-zinc-300 mt-1">
+                {{ taller.subtitulo }}
+              </p>
+              <p class="text-xs text-zinc-400 mt-2 leading-relaxed">
+                {{ taller.descripcion }}
+              </p>
+            </div>
+
+            <!-- Fichas de Informacion y Ubicacion -->
+            <div class="space-y-3.5 my-6 pt-5 border-t border-white/5">
+              <!-- Direccion -->
+              <div class="flex items-start gap-3 text-xs sm:text-sm">
+                <div class="p-2 rounded-xl bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 shrink-0 mt-0.5">
+                  <MapPinIcon class="size-4" />
+                </div>
+                <div class="min-w-0 flex-1">
+                  <span class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block">Ubicación</span>
+                  <span class="text-zinc-200 font-medium leading-snug">{{ taller.direccion }}</span>
+                </div>
+              </div>
+
+              <!-- Telefono -->
+              <div class="flex items-start gap-3 text-xs sm:text-sm">
+                <div class="p-2 rounded-xl bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 shrink-0 mt-0.5">
+                  <PhoneIcon class="size-4" />
+                </div>
+                <div class="min-w-0 flex-1">
+                  <span class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block">Teléfono Directo</span>
+                  <span class="text-zinc-200 font-medium font-mono">{{ taller.telefono }}</span>
+                </div>
+              </div>
+
+              <!-- Horario -->
+              <div class="flex items-start gap-3 text-xs sm:text-sm">
+                <div class="p-2 rounded-xl bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 shrink-0 mt-0.5">
+                  <ClockIcon class="size-4" />
+                </div>
+                <div class="min-w-0 flex-1">
+                  <span class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block">Horario de Taller</span>
+                  <span class="text-zinc-200 font-medium">{{ taller.horario }}</span>
+                </div>
+              </div>
+
+              <!-- Equipamiento -->
+              <div class="flex items-start gap-3 text-xs sm:text-sm">
+                <div class="p-2 rounded-xl bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 shrink-0 mt-0.5">
+                  <WrenchScrewdriverIcon class="size-4" />
+                </div>
+                <div class="min-w-0 flex-1">
+                  <span class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block">Equipamiento Técnico</span>
+                  <span class="text-zinc-400 text-xs leading-relaxed">{{ taller.equipamiento }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Boton de Accion Principal -->
+          <div class="pt-5 border-t border-white/5">
             <button
-              @click.stop="seleccionarTaller(taller.id.replace('taller-', ''))"
-              :class="[
-                taller.destacado
-                  ? (taller.color === 'yellow' ? 'bg-yellow-500 text-white hover:bg-yellow-400 focus-visible:outline-yellow-500' : 'bg-blue-500 text-white hover:bg-blue-400 focus-visible:outline-blue-500')
-                  : 'bg-white/10 text-white inset-ring inset-ring-white/5 hover:bg-white/20 focus-visible:outline-white/75',
-                'mt-8 block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 sm:mt-10 transition-all duration-300',
-                (tallerActivo === taller.id.replace('taller-', '') || hoverActivo === taller.id.replace('taller-', ''))
-                  ? 'ring-2 ring-white transform scale-105'
-                  : 'hover:scale-105'
-              ]"
+              type="button"
+              @click.stop="seleccionarTaller(taller.id)"
+              class="w-full h-12 sm:h-14 rounded-2xl bg-yellow-500 hover:bg-yellow-400 text-black font-extrabold text-sm sm:text-base inline-flex items-center justify-center gap-2.5 shadow-lg shadow-yellow-500/25 active:scale-[0.98] transition-all cursor-pointer group/btn"
             >
-              Ingresar a {{ taller.nombre.replace('Taller ', '') }}
+              <span>Ingresar a {{ taller.nombre.replace('Taller ', '') }}</span>
+              <ArrowRightIcon class="size-5 group-hover/btn:translate-x-1 transition-transform" />
             </button>
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </template>
-
-<style scoped>
-/* Estilos para la perspectiva 3D */
-.perspective-1000 {
-  perspective: 1000px;
-}
-
-/* Transiciones suaves para todos los elementos transformables */
-.transition-all {
-  transition-property: all;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Efecto de brillo para el card activo */
-.shadow-glow {
-  box-shadow:
-    0 0 30px rgba(234, 179, 8, 0.3),
-    0 0 60px rgba(234, 179, 8, 0.1);
-}
-
-/* Asegurar que los botones mantengan su estilo */
-button {
-  z-index: 30;
-}
-
-/* Mejoras para la experiencia táctil en móviles */
-@media (max-width: 768px) {
-  .cursor-pointer {
-    cursor: default;
-  }
-}
-
-/* Efectos de glassmorphism */
-.backdrop-blur-sm {
-  backdrop-filter: blur(8px);
-}
-
-/* Gradientes de texto */
-.bg-clip-text {
-  -webkit-background-clip: text;
-  background-clip: text;
-}
-
-/* Sombras mejoradas */
-.shadow-lg {
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
-}
-
-.shadow-xl {
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-}
-
-.shadow-2xl {
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
-}
-
-/* Animaciones de hover mejoradas */
-.group:hover .group-hover\:scale-110 {
-  transform: scale(1.1);
-}
-
-/* Efectos de profundidad para las cards */
-.card-depth {
-  box-shadow:
-    0 25px 50px -12px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(234, 179, 8, 0.1);
-}
-
-/* Efecto inset ring para botones */
-.inset-ring {
-  box-shadow: inset 0 0 0 1px;
-}
-</style>
