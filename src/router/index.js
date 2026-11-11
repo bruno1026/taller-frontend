@@ -6,10 +6,12 @@ import LoginView from '../views/LoginView.vue'
 import SeleccionTallerView from '../views/SeleccionTallerView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import HistorialView from '../views/HistorialView.vue'
+import ArchivosView from '../views/ArchivosView.vue'
 import UsersAdminView from '../views/UsersAdminView.vue'
 import RecuperarPasswordView from '../views/RecuperarPasswordView.vue'
 import ResetPasswordView from '../views/ResetPasswordView.vue'
 import ContactoView from '../views/ContactoView.vue'
+import TelegramView from '../views/TelegramView.vue'
 
 const decodeToken = (token) => {
   try {
@@ -87,26 +89,47 @@ const router = createRouter({
       {
       path: '/historial',
       name: 'historial',
-      component: HistorialView, // 👈 Nueva ruta
+      component: HistorialView,
       meta: {
         showNavbar: true,
         showFooter: true,
         requiresAuth: true,
-        roles: ['admin', 'empleado']
-        }
-
+        roles: ['superadmin', 'admin', 'tecnico', 'empleado']
+      }
     },
-      {
-        path: '/usuarios',
-        name: 'usuarios',
-        component: UsersAdminView,
-        meta: {
-          showNavbar: true,
-          showFooter: true,
-          requiresAuth: true,
-          roles: ['admin']
-        }
-      },
+    {
+      path: '/archivos',
+      name: 'archivos',
+      component: ArchivosView,
+      meta: {
+        showNavbar: true,
+        showFooter: true,
+        requiresAuth: true,
+        roles: ['superadmin', 'admin']
+      }
+    },
+    {
+      path: '/usuarios',
+      name: 'usuarios',
+      component: UsersAdminView,
+      meta: {
+        showNavbar: true,
+        showFooter: true,
+        requiresAuth: true,
+        roles: ['superadmin']
+      }
+    },
+    {
+      path: '/telegram',
+      name: 'telegram',
+      component: TelegramView,
+      meta: {
+        showNavbar: true,
+        showFooter: true,
+        requiresAuth: true,
+        roles: ['superadmin']
+      }
+    },
       {
         path: '/recuperar-password',
         name: 'recuperar-password',
@@ -154,8 +177,8 @@ router.beforeEach((to, from, next) => {
       return next('/login')
     }
 
-    // Verificar rol si la ruta lo exige
-    if (to.meta.roles && !to.meta.roles.includes(decoded.rol)) {
+    // Verificar rol si la ruta lo exige: superadmin tiene acceso universal
+    if (to.meta.roles && decoded.rol !== 'superadmin' && !to.meta.roles.includes(decoded.rol)) {
       return next('/seleccion-taller')
     }
   }

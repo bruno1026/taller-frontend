@@ -1,69 +1,78 @@
 # Taller Notas - Frontend Web
 
 ## Descripcion del Sistema
-Aplicacion web interactiva para taller mecanico especializado en la marca Renault. Integra un portal publico de captacion de clientes, catalogo tecnico de vehiculos atendidos en Mexico, sistema de cotizaciones conectado a WhatsApp y un panel administrativo seguro para la captura y consulta de notas de servicio.
+Aplicacion web interactiva para la administracion operativa de talleres mecanicos especializados en vehiculos Renault. Provee un portal publico de atencion al cliente y un portal privado de gestion tecnica con interfaz de alta fidelidad, diseno oscuro avanzado y aceleracion grafica por hardware.
 
-## Para Que Sirve
-- Portal Publico Informativo: Muestra la experiencia del taller, servicios de mantenimiento preventivo y correctivo, y garantias de servicio.
-- Catalogo de Modelos Renault: Vista clasificada por categorias (SUVs, Compactos, Sedanes, Utilitarios, Hibridos y Electricos) con anos de comercializacion, motorizaciones y servicios recomendados.
-- Solicitud de Cotizaciones: Formulario que recopila datos de contacto, modelo de vehiculo y sintomas reportados, enviando la solicitud a la base de datos y abriendo automaticamente una conversacion de WhatsApp estructurada con el asesor tecnico.
-- Portal de Gestion Interna: Acceso protegido para el personal mecanico y administrativo que permite capturar notas de trabajo, calcular presupuestos y consultar el historial de servicios realizados.
-- Experiencia Visual Interactiva: Fondo reactivo con aceleracion por GPU desarrollado en HTML5 Canvas con estetica automotriz y animaciones fluidas mediante GSAP.
+## Modulos y Funcionalidades Principales
+
+### 1. Panel de Navegacion Lateral y Control de Roles
+- Barra lateral dinamica que adapta los accesos directos segun el rol del usuario conectado:
+  - Superadministrador: Talleres, Historial completo, Gestor de Archivos, Monitoreo de Telegram, Administracion de Usuarios y Perfil.
+  - Administrador: Talleres, Historial completo, Gestor de Archivos y Perfil.
+  - Tecnico: Talleres, Historial restringido a notas propias y Perfil.
+
+### 2. Historial de Notas de Servicio y Control Financiero
+- Indicador financiero en tiempo real que totaliza los montos generados por las notas registradas y calcula la sumatoria de las busquedas activas.
+- Chips visuales de trazabilidad visibles para administradores que indican que usuario creo la nota y si fue modificada posteriormente.
+- Filtro rapido por taller (Todos los talleres, Taller Talisman, Taller Lutecia) y buscador en vivo por cliente, modelo o placas.
+- Acciones de impresion de PDF, descarga directa y edicion de notas.
+
+### 3. Gestor de Archivos y Respaldo
+- Explorador cronologico de notas organizadas por anio y mes.
+- Visualizacion previa de comprobantes directamente en el navegador.
+- Boton de Descarga de Respaldo ZIP que agrupa todos los archivos PDF del taller y el archivo con los datos completos de la base de datos.
+- Boton de Purga de Base de Datos para el Superadministrador, protegido por un sistema de doble confirmacion que solicita escribir una palabra clave de seguridad.
+
+### 4. Monitoreo en Tiempo Real por Telegram
+- Panel para administracion del bot de alertas del sistema.
+- Opcion para activar o pausar el envio de alertas automaticas.
+- Boton de prueba de conexion inmediata con la aplicacion de mensajeria.
+- Tarjetas informativas sobre las notificaciones de caida del servicio y el reporte diario.
+
+### 5. Portal Publico y Cotizaciones
+- Catalogo oficial de vehiculos Renault comercializados en Mexico.
+- Formulario de cotizacion en linea con enlace directo a WhatsApp para atencion tecnica inmediata.
+- Fondo grafico interactivo con renderizado de particulas y telemetria en tiempo real a sesenta cuadros por segundo.
 
 ## Tecnologias Utilizadas
-- Vue.js 3: Framework progresivo utilizando Composition API y sintaxis script setup.
-- Vite: Herramienta de compilacion rapida y servidor de desarrollo.
-- Tailwind CSS: Framework utilitario para maquetacion responsiva y estilos visuales.
-- GSAP y ScrollTrigger: Biblioteca para animaciones complejas basadas en scroll.
-- HTML5 Canvas API: Motor grafico ligero para el renderizado de particulas y telemetria a 60 FPS.
-- Vue Router: Manejador de rutas para navegacion tipo Single Page Application (SPA).
-- Pinia: Almacen de estado centralizado para la sesion y preferencias.
-- Axios: Cliente HTTP para conexion con la API del backend.
-- Heroicons: Biblioteca de iconos vectoriales SVG.
-- SweetAlert2: Componentes modales y alertas interactivas.
+- Vue.js 3 con Composition API.
+- Vite como entorno de construccion y empaquetador rapido.
+- Tailwind CSS para diseno de interfaz y adaptabilidad responsiva.
+- GSAP para transiciones y animaciones fluidas.
+- HTML5 Canvas para renderizado acelerado de particulas graficas.
+- Vue Router para gestion de rutas y navegacion tipo SPA.
+- Pinia para administracion del estado de sesion.
+- Axios para comunicacion con la API REST del backend.
+- SweetAlert2 para ventanas modales y confirmaciones de seguridad.
+- Heroicons para iconografia vectorial.
 
-## Requisitos Previos
-- Node.js version 20.19.0 o >= 22.12.0
+## Requisitos del Entorno
+- Node.js version 18 o superior
 - Gestor de paquetes npm o pnpm
 
-## Instrucciones de Instalacion
+## Instrucciones de Puesta en Marcha
 
-1. Navegar al directorio del frontend:
+1. Ingresar a la carpeta del frontend:
 ```bash
 cd frontend
 ```
 
-2. Instalar dependencias del proyecto:
+2. Instalar dependencias:
 ```bash
-npm install
+pnpm install
 ```
 
-3. Crear el archivo de entorno `.env`:
-Crear un archivo `.env` en la raiz del directorio `frontend` con la URL base de la API:
-```env
-VITE_API_URL=http://localhost:3001/api
-```
+3. Archivo de configuracion de entorno:
+Crear el archivo de configuracion local basandose en el archivo de ejemplo disponible en la raiz del frontend, especificando la direccion base de la API del backend.
 
-4. Iniciar el servidor de desarrollo:
+4. Iniciar servidor de desarrollo:
 ```bash
-npm run dev
+pnpm run dev
 ```
-
-El aplicativo quedara disponible en `http://localhost:5174`.
 
 5. Compilar para produccion:
 ```bash
-npm run build
+pnpm run build
 ```
 
-Los archivos optimizados y minificados se generaran en el directorio `dist/`.
-
-6. Previsualizar compilacion de produccion:
-```bash
-npm run preview
-```
-
-7. Analisis de codigo y formato:
-```bash
-npm run lint
-```
+La compilacion colocara los archivos listos para produccion en la carpeta publica del backend para el despliegue monolitico.
