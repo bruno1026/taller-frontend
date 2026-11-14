@@ -259,6 +259,14 @@ const eliminarNota = async (id) => {
   }
 }
 
+const tieneGarantiaActiva = (nota) => {
+  if (nota.tieneGarantia === false) return false
+  if (nota.tieneGarantia === true) return true
+  if (!nota.garantia) return false
+  const g = nota.garantia.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim()
+  return g !== '' && !g.includes('sin garantia') && !g.includes('no especificada') && g !== '0'
+}
+
 watch([terminoBusqueda, filtroTaller], () => {
   paginaActual.value = 1
 })
@@ -523,7 +531,7 @@ onMounted(() => {
                 </span>
 
                 <!-- Garantía -->
-                <span v-if="nota.garantia && !nota.garantia.toLowerCase().includes('sin garantia')" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[11px] font-semibold">
+                <span v-if="tieneGarantiaActiva(nota)" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[11px] font-semibold">
                   <ShieldCheckIcon class="size-3.5" />
                   <span>{{ nota.garantia }}</span>
                 </span>
